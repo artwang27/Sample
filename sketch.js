@@ -31,35 +31,36 @@ function preload() {
 
 
 function test() {
-	print("---");
 
-	//Font.setupTrueColor("White");
-	//Font.TrueColor=color("White").levels;
-	let c= color(245,218,4);
-	Font.setupTrueColor( c);
-	c=color("Black");
-	Font.setupFalseColor(c);
+    setupFont();
 
-	print(Font.TrueColor);
-	print("---");
+    //LetterTest();
 
-	let L=new Letter();
-	//let colors=L.asColors(2, 2, 54, 54);
-	//print(colors);
+    let startx=22;
+    let starty=14;
 
-	translate(350, 0);
-	L.asBools(23,14,5,5);
-	print(L.bits);
+ 
 
-	const space=""
-	let strAry = L.toStrings('O',' ');
-	print(strAry);
+    let spx=32;
+    let spy=49;
+    let letterPerLine=10;
+    let lines=5;
 
-	printLetter(strAry);
+    let letterAry=[];
+    letterAry=SamplingStrings(letterPerLine, lines, startx, starty, spx, spy);
+
+    let strAry=letterAry[2].toStringArray('O',' ');
+    writeStringArray(strAry);
+
+
+
+	//translate(350, 0);
 
 }
 
-function printLetter(strAry){
+
+//把字串陣列印到 html上
+function writeStringArray(strAry){
 	let s="";
 	for(let i=0; i< strAry.length; i++){
 		s = s+ strAry[i] + "<BR>";
@@ -68,3 +69,60 @@ function printLetter(strAry){
 	document.getElementById("textArea").innerHTML = s;
 }
 
+
+//取樣字串裡的每個點
+/*
+letterPerLine：一行有幾個字
+lines：共有幾行
+spx：字距，字與字的距離 
+spy：字距，字與字的距離
+*/
+function SamplingStrings(letterPerLine, lines, startx, starty,spx, spy){
+    let letterAry=[];
+
+    let y = starty;
+    for(let j=0; j<lines; j++){
+        let x=startx;
+       
+        for(let i=0; i<letterPerLine; i++){
+            let L=new Letter(x,y,Font.dx, Font.dy);
+            letterAry.push(L);
+            
+            x+=spx;
+        }
+        y+=spy;
+    }
+
+    return letterAry;
+}
+
+
+
+function setupFont(){
+    let c = color(245, 218, 4);
+    Font.setupTrueColor(c);
+
+    c = color("Black");
+    Font.setupFalseColor(c);
+
+    Font.dx = 5;
+    Font.dy = 5;
+
+    print(Font.TrueColor);
+
+}
+
+function LetterTest(){
+    let startx = 22;
+    let starty = 15;
+
+    let L = new Letter(startx, starty, 5, 5);
+    print(L.bits);
+
+    //在 html 以文字 char 方式來填圖
+    let strAry = L.toStringArray('O', '_');
+    print(strAry);
+    writeStringArray(strAry);
+
+
+}

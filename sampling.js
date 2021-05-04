@@ -3,24 +3,27 @@
 
 
 class Font {
-   static Width = 5;
-   static Height = 7;
-   //static TrueColor;
-   //static FalseColor;
-   static setupTrueColor(c) {
-      Font.TrueColor = c.levels;  //把 color 轉換成 rgba 陣列
-   }
+    static Width = 5;
+    static Height = 7;
+    static dx;    //點與點的距離，取樣的距離
+    static dy;   //點與點的距離
 
-   static setupFalseColor(c) {
-      Font.FalseColor = c.levels;  //把 color 轉換成 rgba 陣列
-   }
+    //static TrueColor;
+    //static FalseColor;
+    static setupTrueColor(c) {
+        Font.TrueColor = c.levels;  //把 color 轉換成 rgba 陣列
+    }
 
+    static setupFalseColor(c) {
+        Font.FalseColor = c.levels;  //把 color 轉換成 rgba 陣列
+    }
 
-}
+}//Font
 
 class Letter {
-   constructor() {
-      this.bits = [];
+    constructor(startX, startY, dx, dy) {
+        this.bits = [];
+        this.asBools(startX, startY, dx, dy, this.compareFontFalseColor)
    }
 
    //------------------------------------------------------------------
@@ -36,22 +39,27 @@ class Letter {
    //從 bitmap 的某一區間，萃取字體，構成 bool 陣列，並存入 this.bits 方便未來的處理
    //compareFunction：可在 Letter 類別之外另行撰寫，並以函式指標參數傳入
    //也可以省略此參數，以預設的 compareFontTrueColor 做顏色的比對
-   asBools(startX, startY, dx, dy, compareFunction=this.compareFontTrueColor) {
+   asBools(startX, startY, dx, dy, compareFunction=this.compareFontFalseColor) {
       this.bits = this.getLetter(startX, startY, dx, dy, compareFunction);
-      return this.bits; //array of bool
    }
+
 
    //判斷顏色若是與 TrueColor 相符，則傳回 true
    compareFontTrueColor(c) {
-      //return colorEqual(c, Font.TrueColor);
-      return ! colorEqual(c, Font.FalseColor);
+      return colorEqual(c, Font.TrueColor);
    }
+
+    //判斷顏色若是與 FalseColor 相符，則傳回 false
+    compareFontFalseColor(c) {
+        return !colorEqual(c, Font.FalseColor);
+    }
+
    //------------------------------------------------------------------
 
    //把 bool 陣列轉換為字串陣列
    //當 true 時轉換為 trueChar，
    //當 false 時轉換為 falseChar
-   toStrings(trueChar, falseChar){
+   toStringArray(trueChar, falseChar){
       let strAry=[];
       if(this.bits.length===0){
          return "null";
