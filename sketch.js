@@ -1,73 +1,65 @@
-function setup() {
-	// put setup code here
-	createCanvas(800, 600);
-	image(img, 0, 0);
+let img;
+function preload() {
+    img = loadImage('assets/03.jpg', filterAsBlockAndWhite);
+}
 
-	test();
-	return;
-	getLetter(0, 0, 80, 80, colorAsBool);
+
+function setup() {
+    layout();
+
+	let canvas=createCanvas(800, 600);
+    canvas.position(300,0);
+
+    reDraw();
 }
 
 
 
 function draw() {
-	// put drawing code here
-	//getLetter(0, 0, 50, 50);
-	return;
-
-	if (mouseIsPressed) {
-		fill(0);
-	} else {
-		fill(255);
-	}
-	ellipse(mouseX, mouseY, 80, 80);
+    return;
 }
 
-let img;
-function preload() {
-	img = loadImage('assets/eng02.png');
-}
-
-
-
-function test() {
-
-    setupFont();
-
-    //LetterTest();
-
-    let startx=22;
-    let starty=14;
-
- 
-
-    let spx=32;
-    let spy=49;
-    let letterPerLine=10;
-    let lines=5;
-
-    let letterAry=[];
-    letterAry=SamplingStrings(letterPerLine, lines, startx, starty, spx, spy);
-
-    let strAry=letterAry[2].toStringArray('O',' ');
-    writeStringArray(strAry);
-
-
-
-	//translate(350, 0);
+function filterAsBlockAndWhite(){
+    clear();
+    image(img, 0, 0);
+    filter(THRESHOLD);
+    saveCanvas('myCanvas', 'png');
 
 }
 
-
-//把字串陣列印到 html上
-function writeStringArray(strAry){
-	let s="";
-	for(let i=0; i< strAry.length; i++){
-		s = s+ strAry[i] + "<BR>";
-	}
-
-	document.getElementById("textArea").innerHTML = s;
+//圖形重新繪製，並過濾成黑白兩色
+function reDraw(){
+    clear();
+    image(img, 0, 0);
+    filter(THRESHOLD);
 }
+
+
+
+
+
+function LetterTest() {
+
+    //重畫螢幕，因為上面可能有輔助格線，這次不要畫格線
+    print("LetterTest");
+    reDraw();
+    resetFont();
+
+
+    let startx = float(dom.startx.value());    //22;
+    let starty = float(dom.starty.value());    //15;
+
+    let L = new Letter(startx, starty);
+
+    //在 html 以文字 char 方式來填圖
+    let strAry = L.toStringArray('O', '_');
+    //print(strAry);
+    showStringArrayHtml(strAry);
+
+    drawLetterToCanvas();
+}
+
+
 
 
 //取樣字串裡的每個點
@@ -98,31 +90,3 @@ function SamplingStrings(letterPerLine, lines, startx, starty,spx, spy){
 
 
 
-function setupFont(){
-    let c = color(245, 218, 4);
-    Font.setupTrueColor(c);
-
-    c = color("Black");
-    Font.setupFalseColor(c);
-
-    Font.dx = 5;
-    Font.dy = 5;
-
-    print(Font.TrueColor);
-
-}
-
-function LetterTest(){
-    let startx = 22;
-    let starty = 15;
-
-    let L = new Letter(startx, starty, 5, 5);
-    print(L.bits);
-
-    //在 html 以文字 char 方式來填圖
-    let strAry = L.toStringArray('O', '_');
-    print(strAry);
-    writeStringArray(strAry);
-
-
-}

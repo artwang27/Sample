@@ -1,0 +1,69 @@
+<pre><p id="textArea">1234</p></pre>
+
+let h1;
+h1=createElement("h1","This is h1");
+h1.position(100,100);
+h1.html("改成別的內容");
+
+-----------------------------
+let btn;
+btn=createButton();
+btn.mousePressed(changeColor);
+
+function changeColor(){
+    bgColor=color(random(255));
+}
+
+function changeStyle(){
+    btn.style("padding","24px");
+}
+
+-----------------------------
+let slider;
+slider=createSlider(min, max, start);
+let value=slider.value();
+
+-----------------------------
+let input
+input=createInput("請在這裡輸入文字");
+let v=input.value();
+input.changed(UpdateInputfun);
+
+function UpdateInputfun(){
+    let txt=input.value();
+    console.log("new value= "+ txt);
+}
+
+-----------------------------
+
+push();  //暫存目前筆刷狀態
+noStroke();
+fille(77);
+colorMode(HSB,360,100,100);
+stroke(314,34,56);
+pop();  //恢復先前筆刷狀態
+
+
+function test() {
+    //alert("test");
+    print("test");
+    setupFont();
+    LetterTest();
+    return;
+
+    let startx=22;
+    let starty=14;
+    let spx=32;
+    let spy=49;
+    let letterPerLine=10;
+    let lines=5;
+
+    let letterAry=[];
+    letterAry=SamplingStrings(letterPerLine, lines, startx, starty, spx, spy);
+
+    let strAry=letterAry[2].toStringArray('O',' ');
+    showStringArrayHtml(strAry);
+}
+
+
+https://p5js.org/reference/#/p5/saveCanvas
