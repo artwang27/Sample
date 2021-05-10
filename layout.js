@@ -3,6 +3,11 @@ let dom=Object;    //集中管理新增的控制項
 
 function layout(){
     //--------------------------------------------
+    createP("調整圖像黑白閥值");
+    dom.slider = createSlider(0, 1.0, 0.5, 0.1);
+    dom.slider.mouseMoved(changeImageContrast);
+
+    //--------------------------------------------
     createP("設定單字選項");
     dom.f1 = makeInputLine("橫向取樣幾個點",5);
     dom.f2 = makeInputLine("縱向取樣幾個點", 7);
@@ -95,6 +100,21 @@ function resetFont() {
         Font.setupMatchBool(false);
 
     drawFontGrid();
+}
+
+//用 slider 來更改影像二元化的閥值
+function changeImageContrast(){
+    //若閥值沒有更改，則略過
+    let v = dom.slider.value();
+    if (dom.slider.lastValue===v)
+        return;
+    
+    dom.slider.lastValue=v;
+    print(v);
+
+    duplicate(img, img2);
+    img2.filter(THRESHOLD, v);
+    reDraw();
 }
 
 

@@ -73,7 +73,8 @@ function drawFontGrid() {
     let dx = Font.dx;
     let dy = Font.dy;
 
-    stroke(0,255,0);
+    push();
+    stroke(0,255,0);    //綠色外框
     noFill();
     rectMode(CENTER);
 
@@ -86,4 +87,14 @@ function drawFontGrid() {
         }
 
     }
+
+    pop();
+}
+
+//複製 image 圖像
+function duplicate(src, dst){
+    let w=src.width;
+    let h=src.height;
+    dst.copy(src,0,0,w,h,0,0,w,h);
+
 }

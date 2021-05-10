@@ -1,14 +1,20 @@
-let img;
+let img;    //可以是彩色的
+let img2;   //img 的備份，用來製作 filter 所產生的圖形，所以呈現出黑白兩色
 function preload() {
-    img = loadImage('assets/03.jpg', filterAsBlockAndWhite);
+    img = loadImage('assets/03.jpg');
 }
 
 
 function setup() {
+    img2 = new p5.Image(img.width, img.height);
+
     layout();
 
 	let canvas=createCanvas(800, 600);
     canvas.position(300,0);
+    
+    //duplicate(img, img2);
+    changeImageContrast();
 
     reDraw();
 }
@@ -19,19 +25,14 @@ function draw() {
     return;
 }
 
-function filterAsBlockAndWhite(){
-    clear();
-    image(img, 0, 0);
-    filter(THRESHOLD);
-    saveCanvas('myCanvas', 'png');
-
-}
 
 //圖形重新繪製，並過濾成黑白兩色
 function reDraw(){
     clear();
-    image(img, 0, 0);
-    filter(THRESHOLD);
+    image(img2, 0, 0);
+
+    //textSize(32);
+    //text('word', 18, 32);
 }
 
 

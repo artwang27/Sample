@@ -30,7 +30,8 @@ class Letter {
     constructor(startX, startY, dx=Font.dx, dy=Font.dy, fontWidth=Font.Width, fontHeight=Font.Height) {
         this.FontWidth= fontWidth;
         this.FontHeight= fontHeight;
-        this.compareFunction = compareMatchFontColor;  //設定要使用哪一個比較函數？
+        //this.compareFunction = compareMatchFontColor;  //設定要使用哪一個比較函數？
+        this.compareFunction = compareBrightness;  //設定要使用哪一個比較函數？
 
         this.bits = [];
         this.bits=this.asBools(startX, startY, dx, dy);
@@ -139,4 +140,10 @@ class Letter {
 //比對顏色，若是符合，則傳回當初設定的布林值
 function compareMatchFontColor(c){
     return colorEqual(c, Font.MatchColor) ? Font.MatchBool : !Font.MatchBool;
+}
+
+//比對顏色，若是亮度大於30，則傳回當初設定的布林值
+function compareBrightness(c){
+    let value = brightness(c);
+    return value>30 ? Font.MatchBool : !Font.MatchBool;
 }
