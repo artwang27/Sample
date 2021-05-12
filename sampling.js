@@ -7,7 +7,11 @@ class Font {
     static Height = 7;
     static dx=5;    //點與點的距離，取樣的距離
     static dy=5;   //點與點的距離
+    static BlackThresold = 30;  //亮度閥值，小於此值則視為黑色
+    static BlackBool = true;  //若為黑色，則其 bool 將被設為 true 或 false ?
 
+
+    /*
     //要比對的顏色
     static MatchColor=[237, 34, 93, 255];    
     static setupMatchColor(c) {
@@ -20,8 +24,7 @@ class Font {
     static setupMatchBool(b=true){
         this.MatchBool=b;
     }
-
-
+    */
 
 }//Font
 
@@ -31,7 +34,8 @@ class Letter {
         this.FontWidth= fontWidth;
         this.FontHeight= fontHeight;
         //this.compareFunction = compareMatchFontColor;  //設定要使用哪一個比較函數？
-        this.compareFunction = compareBrightness;  //設定要使用哪一個比較函數？
+        //this.compareFunction = compareBrightness;  //設定要使用哪一個比較函數？
+        this.compareFunction= compareBlack;
 
         this.bits = [];
         this.bits=this.asBools(startX, startY, dx, dy);
@@ -54,25 +58,7 @@ class Letter {
       return this.getLetter(startX, startY, dx, dy, this.compareFunction);
    }
 
-   /*
-   //比對顏色，若是符合，則傳回當初設定的布林值
-   compareMatchFontColor(c){
-       return colorEqual(c, Font.MatchColor)? Font.MatchBool: !Font.MatchBool;
-   }
-   */
-
-   /*
-   //判斷顏色若是與 TrueColor 相符，則傳回 true
-   compareFontTrueColor(c) {
-      return colorEqual(c, Font.TrueColor);
-   }
-
-    //判斷顏色若是與 FalseColor 相符，則傳回 false
-    compareFontFalseColor(c) {
-        return !colorEqual(c, Font.FalseColor);
-    }
-    */
-
+   
    //------------------------------------------------------------------
    //從 bitmap 的某一區間，萃取字體，構成 bool 陣列
    getLetter(startX, startY, dx, dy, compareFunction = null) {
@@ -137,6 +123,8 @@ class Letter {
 
 
 
+
+/*
 //比對顏色，若是符合，則傳回當初設定的布林值
 function compareMatchFontColor(c){
     return colorEqual(c, Font.MatchColor) ? Font.MatchBool : !Font.MatchBool;
@@ -146,4 +134,12 @@ function compareMatchFontColor(c){
 function compareBrightness(c){
     let value = brightness(c);
     return value>30 ? Font.MatchBool : !Font.MatchBool;
+}
+*/
+
+
+//比對顏色，若是亮度大於30，則傳回當初設定的布林值
+function compareBlack(c) {
+    let value = brightness(c);
+    return value <= Font.BlackThresold ? Font.BlackBool : !Font.BlackBool;
 }

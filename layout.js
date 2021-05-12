@@ -20,6 +20,7 @@ function layout(){
     dom.starty = makeInputLine("starty", 13);
 
     //--------------------------------------------
+/*
     let p3=createP("要取樣的顏色 ");
     dom.colorPicker = createColorPicker('#ffffff');
     dom.colorPicker.parent(p3);
@@ -31,6 +32,19 @@ function layout(){
     dom.radio.value(1);
 
     print(dom.radio.value());
+*/    
+    //--------------------------------------------
+    createP("黑色判別標準");
+    dom.brightnessThresold= makeInputLine("亮度小於多少視為黑色(0~100)", 30);
+
+    let d=createDiv("把黑色視為:");
+    d.style('font-size', '12px');
+    dom.blackAsBool = createSelect();
+    dom.blackAsBool.option("true");
+    dom.blackAsBool.option("false");
+    dom.blackAsBool.selected("true");
+    dom.blackAsBool.parent=d;
+    dom.blackAsBool.changed(resetFont); //若有改變，則更新
 
     //--------------------------------------------
     createP("擷取字串");
@@ -79,15 +93,22 @@ function resetFont() {
     Font.Height=7;
     Font.dx=5;
     Font.dy=7;
-    Font.MatchColor="Black";
-    Font.MatchBool=true;
+    Font.BlackThresold =30;  //亮度閥值，小於此值則視為黑色
+    Font.BlackBool = true;  //若為黑色，則其 bool 將被設為 true 或 false ?
+
+    //Font.MatchColor="Black";
+    //Font.MatchBool=true;
     */
 
     Font.Width = int(dom.f1.value());
     Font.Height = int(dom.f2.value());
     Font.dx = float(dom.f3.value());
     Font.dy = float(dom.f4.value());
+    Font.BlackThresold = int(dom.brightnessThresold.value());
+    Font.BlackBool = dom.blackAsBool.value()==="true" ? true: false;
 
+
+    /*
     let c = dom.colorPicker.value();
     Font.setupMatchColor(c);
     //print(Font.MatchColor);
@@ -98,6 +119,7 @@ function resetFont() {
         Font.setupMatchBool(true);
     else
         Font.setupMatchBool(false);
+    */
 
     drawFontGrid();
 }
